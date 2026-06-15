@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Карточка о себе</title>
+    <title>Карточка о себе и портфолио</title>
     
-    <!-- Встроенные стили (Чистый CSS, независимый от интернета) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
     <style>
         * {
             box-sizing: border-box;
@@ -19,36 +20,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: screen;
-            height: 100vh;
-            padding: 20px;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        /* Главный контейнер-обёртка, чтобы всё шло строго друг под другом по центру */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 24px; /* Отступ между карточкой и блоком проектов */
+            max-width: 650px;
+            width: 100%;
+            align-items: center;
         }
         .card {
             background-color: #ffffff;
             border-radius: 20px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             padding: 40px;
-            max-width: 600px;
             width: 100%;
             display: flex;
             flex-direction: row;
             gap: 30px;
             align-items: center;
             border: 1px solid #cbd5e1;
-        }
-        .avatar {
-            width: 120px;
-            height: 120px;
-            background-color: #4f46e5; /* Индиго цвет для круга */
-            color: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: 900;
-            flex-shrink: 0;
-            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
         }
         .info-block {
             flex: 1;
@@ -126,7 +120,7 @@
             background-color: #0284c7;
         }
         
-        /* Мобильная адаптивность */
+        /* Мобильная адаптивность для главной карточки */
         @media (max-width: 500px) {
             .card {
                 flex-direction: column;
@@ -143,65 +137,87 @@
 </head>
 <body>
 
-    <!-- Главная карточка -->
-    <div class="card">
-        
-        <!-- Левая часть: Реальная аватарка -->
-        <img src="{% static 'articles/images/avatar.jpg' %}" alt="Аватар" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 3px solid #4f46e5;">
+    <div class="main-wrapper">
 
+        <div class="card">
+            
+            <img src="{% static 'articles/images/avatar.jpg' %}" alt="Аватар" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 3px solid #4f46e5;">
 
-        <!-- Правая часть: Контент -->
-        <div class="info-block">
-            <h1>{{ user.name }}</h1>
-            <p class="role">{{ user.role }}</p>
-            <p class="bio">{{ user.bio }}</p>
+            <div class="info-block">
+                <h1>{{ user.name }}</h1>
+                <p class="role">{{ user.role }}</p>
+                <p class="bio">{{ user.bio }}</p>
 
-            <!-- Навыки -->
-            <p class="skills-title">Навыки</p>
-            <div class="skills-container">
-                {% for skill in user.skills %}
-                    <span class="skill-tag">{{ skill }}</span>
-                {% endfor %}
+                <p class="skills-title">Навыки</p>
+                <div class="skills-container">
+                    {% for skill in user.skills %}
+                        <span class="skill-tag">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="buttons-container">
+                    <a href="{{ user.github }}" target="_blank" class="btn btn-github">GitHub</a>
+                    <a href="{{ user.telegram }}" target="_blank" class="btn btn-telegram">Telegram</a>
+                </div>
             </div>
 
-            <!-- Ссылки -->
-            <div class="buttons-container">
-                <a href="{{ user.github }}" target="_blank" class="btn btn-github">GitHub</a>
-                <a href="{{ user.telegram }}" target="_blank" class="btn btn-telegram">Telegram</a>
+        </div>
+
+<div style="background-color: #ffffff; border-radius: 12px; padding: 32px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); width: 100%;">
+            
+            <h3 style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px;">
+                Проекты
+            </h3>
+            
+            <div style="display: flex; flex-direction: column;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 24px; border-bottom: 1px solid #f1f5f9; gap: 16px;">
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 18px; font-weight: 600; color: #0f172a; margin-bottom: 4px;">Jangar Art Gallery</h4>
+                        <p style="font-size: 14px; color: #475569; line-height: 1.6; max-width: 450px;">
+                            Веб-галерея с динамической загрузкой контента. REST API на фреймворке FastAPI, облачная база данных PostgreSQL и защищенный режим автора для добавления и удаления холстов в реальном времени.
+                        </p>
+                    </div>
+                    <div style="flex-shrink: 0;">
+                        <a href="https://github.com/mayfau/jangar_gallery" target="_blank" style="display: inline-block; padding: 8px 16px; font-size: 13px; font-weight: 600; color: #334155; text-decoration: none; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; transition: all 0.2s; text-align: center;">
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-bottom: 1px solid #f1f5f9; gap: 16px;">
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 18px; font-weight: 600; color: #0f172a; margin-bottom: 4px;">Telegram Weather Bot</h4>
+                        <p style="font-size: 14px; color: #475569; line-height: 1.6; max-width: 450px;">
+                            Асинхронный погодный бот на aiogram. Интеграция с внешними API, обработка сессий aiohttp и архитектура отказоустойчивости.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                        <a href="https://t.me/my_weather_mybot" target="_blank" style="display: inline-block; padding: 8px 16px; font-size: 13px; font-weight: 600; color: #4f46e5; text-decoration: none; background-color: #e0e7ff; border-radius: 8px; transition: all 0.2s; text-align: center;">
+                            Запустить
+                        </a>
+                        <a href="https://github.com/mayfau/weather_bot_tg" target="_blank" style="display: inline-block; padding: 8px 16px; font-size: 13px; font-weight: 600; color: #334155; text-decoration: none; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; transition: all 0.2s; text-align: center;">
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 24px; gap: 16px;">
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 18px; font-weight: 600; color: #0f172a; margin-bottom: 4px;">Система учета библиотеки</h4>
+                        <p style="font-size: 14px; color: #475569; line-height: 1.6; max-width: 450px;">
+                            Консольное приложение на Python для контроля книжного фонда. Проектирование и оптимизация реляционной БД на SQLite3.
+                        </p>
+                    </div>
+                    <div style="flex-shrink: 0;">
+                        <a href="https://github.com/mayfau/library_accounting_sistem" target="_blank" style="display: inline-block; padding: 8px 16px; font-size: 13px; font-weight: 600; color: #334155; text-decoration: none; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; transition: all 0.2s; text-align: center;">
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-    </div>
-    <!-- Секция проектов -->
-    <div class="mt-8 max-w-2xl w-full bg-white rounded-3xl p-6 shadow-xl">
-        <h3 class="text-xl font-bold text-slate-800 mb-4">🚀 Мои разработки</h3>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Карточка 1: Telegram Бот -->
-            <div class="border border-slate-100 rounded-2xl p-4 hover:shadow-md transition">
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="text-2xl">🤖</span>
-                    <h4 class="font-bold text-slate-700">Telegram Погодный Бот</h4>
-                </div>
-                <p class="text-sm text-slate-500 mb-4">Асинхронный бот на aiogram, предоставляющий точный прогноз погоды через интеграцию с внешним API.</p>
-                <div class="flex gap-2">
-                    <a href="https://t.me/my_weather_mybot" target="_blank" class="px-3 py-1.5 text-xs font-semibold text-white bg-sky-500 rounded-xl hover:bg-sky-600 transition">Запустить бота</a>
-                    <a href="https://github.com/mayfau/weather_bot_tg" target="_blank" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition">Код GitHub</a>
-                </div>
-            </div>
-
-            <!-- Карточка 2: Система библиотеки -->
-            <div class="border border-slate-100 rounded-2xl p-4 hover:shadow-md transition">
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="text-2xl">📚</span>
-                    <h4 class="font-bold text-slate-700">Система учета библиотеки</h4>
-                </div>
-                <p class="text-sm text-slate-500 mb-4">Консольное приложение на чистом Python с реляционной базой данных SQLite3 для управления книжным фондом.</p>
-                <div class="flex gap-2">
-                    <a href="https://github.com/mayfau/РЕПОЗИТОРИЙ_БАЗЫ" target="_blank" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition">Код GitHub</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
