@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка о себе</title>
+    
+    <!-- Встроенные стили (Чистый CSS, независимый от интернета) -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #e2e8f0; /* Светло-серый фон сайта */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: screen;
+            height: 100vh;
+            padding: 20px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            align-items: center;
+            border: 1px solid #cbd5e1;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            background-color: #4f46e5; /* Индиго цвет для круга */
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 900;
+            flex-shrink: 0;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+        }
+        .info-block {
+            flex: 1;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1.2;
+        }
+        .role {
+            font-size: 14px;
+            font-weight: 700;
+            color: #4f46e5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+        .bio {
+            color: #475569;
+            margin-top: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .skills-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .skill-tag {
+            background-color: #f1f5f9;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            border: 1px solid #e2e8f0;
+        }
+        .buttons-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        .btn {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 12px;
+            transition: background-color 0.2s;
+        }
+        .btn-github {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+        .btn-github:hover {
+            background-color: #0f172a;
+        }
+        .btn-telegram {
+            background-color: #0ea5e9;
+            color: #ffffff;
+        }
+        .btn-telegram:hover {
+            background-color: #0284c7;
+        }
+        
+        /* Мобильная адаптивность */
+        @media (max-width: 500px) {
+            .card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .skills-container {
+                justify-content: center;
+            }
+            .buttons-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Главная карточка -->
+    <div class="card">
+        
+        <!-- Левая часть: Реальная аватарка -->
+        <img src="{% static 'articles/images/avatar.jpg' %}" alt="Аватар" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 3px solid #4f46e5;">
+
+
+        <!-- Правая часть: Контент -->
+        <div class="info-block">
+            <h1>{{ user.name }}</h1>
+            <p class="role">{{ user.role }}</p>
+            <p class="bio">{{ user.bio }}</p>
+
+            <!-- Навыки -->
+            <p class="skills-title">Навыки</p>
+            <div class="skills-container">
+                {% for skill in user.skills %}
+                    <span class="skill-tag">{{ skill }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Ссылки -->
+            <div class="buttons-container">
+                <a href="{{ user.github }}" target="_blank" class="btn btn-github">GitHub</a>
+                <a href="{{ user.telegram }}" target="_blank" class="btn btn-telegram">Telegram</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
